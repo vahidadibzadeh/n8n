@@ -69,6 +69,7 @@ function handleReadAloud() {
 				type="tertiary"
 				size="medium"
 				text
+				:aria-label="copyTooltip"
 				@click="handleCopy"
 			/>
 			<template #content>{{ copyTooltip }}</template>
@@ -83,12 +84,20 @@ function handleReadAloud() {
 				type="tertiary"
 				size="medium"
 				text
+				:aria-label="isSpeaking ? 'Stop reading' : 'Read aloud'"
 				@click="handleReadAloud"
 			/>
 			<template #content>{{ isSpeaking ? 'Stop reading' : 'Read aloud' }}</template>
 		</N8nTooltip>
 		<N8nTooltip placement="bottom" :show-after="300">
-			<N8nIconButton icon="pen" type="tertiary" size="medium" text @click="handleEdit" />
+			<N8nIconButton
+				icon="pen"
+				type="tertiary"
+				size="medium"
+				text
+				aria-label="Edit"
+				@click="handleEdit"
+			/>
 			<template #content>Edit</template>
 		</N8nTooltip>
 		<N8nTooltip v-if="message.type === 'ai'" placement="bottom" :show-after="300">
@@ -97,12 +106,19 @@ function handleReadAloud() {
 				type="tertiary"
 				size="medium"
 				text
+				aria-label="Regenerate"
 				@click="handleRegenerate"
 			/>
 			<template #content>Regenerate</template>
 		</N8nTooltip>
 		<N8nTooltip v-if="executionUrl && message.executionId" placement="bottom" :show-after="300">
-			<N8nIconButton icon="info" type="tertiary" size="medium" text />
+			<N8nIconButton
+				icon="info"
+				type="tertiary"
+				size="medium"
+				text
+				aria-label="View execution details"
+			/>
 			<template #content>
 				Execution ID:
 				<N8nLink :to="executionUrl" :new-window="true">
@@ -116,6 +132,7 @@ function handleReadAloud() {
 				type="tertiary"
 				size="medium"
 				text
+				aria-label="Previous alternative"
 				:disabled="currentAlternativeIndex === 0"
 				@click="$emit('switchAlternative', alternatives[currentAlternativeIndex - 1])"
 			/>
@@ -127,6 +144,7 @@ function handleReadAloud() {
 				type="tertiary"
 				size="medium"
 				text
+				aria-label="Next alternative"
 				:disabled="currentAlternativeIndex === alternatives.length - 1"
 				@click="$emit('switchAlternative', alternatives[currentAlternativeIndex + 1])"
 			/>

@@ -134,7 +134,7 @@ onBeforeMount(() => {
 		]"
 		:style="minHeight ? { minHeight: `${minHeight}px` } : undefined"
 		:data-message-id="message.id"
-		:data-test-id="`chat-message-${message.type}`"
+		data-test-id="chat-message"
 	>
 		<div :class="$style.avatar">
 			<N8nIcon v-if="message.type === 'human'" icon="user" width="20" height="20" />

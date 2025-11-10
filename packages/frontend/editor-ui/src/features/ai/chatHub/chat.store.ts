@@ -268,7 +268,7 @@ export const useChatStore = defineStore(CHAT_STORE, () => {
 	}
 
 	async function fetchMessages(sessionId: string) {
-		const { conversation } = await fetchMessagesApi(rootStore.restApiContext, sessionId);
+		const { session, conversation } = await fetchMessagesApi(rootStore.restApiContext, sessionId);
 
 		const messages = linkMessages(Object.values(conversation.messages));
 
@@ -280,6 +280,13 @@ export const useChatStore = defineStore(CHAT_STORE, () => {
 			messages,
 			activeMessageChain: computeActiveChain(messages, latestMessage?.id ?? null),
 		});
+
+		// Add session to sessions array if it doesn't exist
+		if (!sessions.value) {
+			sessions.value = [session];
+		} else if (!sessions.value.some((s) => s.id === sessionId)) {
+			sessions.value.push(session);
+		}
 	}
 
 	function onBeginMessage() {
