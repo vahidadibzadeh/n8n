@@ -37,7 +37,6 @@ import { useNodeTypesStore } from '@/app/stores/nodeTypes.store';
 import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 import { createEventBus } from '@n8n/utils/event-bus';
-import { ref } from 'vue';
 
 export type WorkflowStateBusEvents = {
 	updateNodeProperties: [WorkflowState, INodeUpdatePropertiesInformation];
@@ -51,10 +50,6 @@ export function useWorkflowState() {
 	const uiStore = useUIStore();
 	const rootStore = useRootStore();
 	const nodeTypesStore = useNodeTypesStore();
-
-	// Track sub-execution IDs for same-canvas scenarios
-	// Map: subExecutionId -> parentExecutionId
-	const subExecutionMap = ref<Map<string, string>>(new Map());
 
 	////
 	// Workflow editing state
@@ -408,28 +403,6 @@ export function useWorkflowState() {
 		}
 	}
 
-	function trackSubExecution(subExecutionId: string, parentExecutionId: string) {
-		console.log('[trackSubExecution] Tracking sub-execution:', {
-			subExecutionId,
-			parentExecutionId,
-		});
-		subExecutionMap.value.set(subExecutionId, parentExecutionId);
-	}
-
-	function getParentExecutionId(executionId: string): string | undefined {
-		return subExecutionMap.value.get(executionId);
-	}
-
-	function getSubExecutionIds(parentExecutionId: string): string[] {
-		const subExecutionIds: string[] = [];
-		for (const [subId, parentId] of subExecutionMap.value.entries()) {
-			if (parentId === parentExecutionId) {
-				subExecutionIds.push(subId);
-			}
-		}
-		return subExecutionIds;
-	}
-
 	return {
 		// Workflow editing state
 		resetState,
@@ -448,9 +421,6 @@ export function useWorkflowState() {
 
 		// Execution
 		markExecutionAsStopped,
-		trackSubExecution,
-		getParentExecutionId,
-		getSubExecutionIds,
 
 		// Node modification
 		setNodeParameters,
