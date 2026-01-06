@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "private": true,
   "engines": {
-    "node": ">=22.16",
+    "node": ">=20.19 <=24.x",
     "pnpm": ">=10.22.0"
   },
   "packageManager": "pnpm@10.22.0",
@@ -51,7 +51,9 @@
     "test:show:report": "pnpm --filter=n8n-playwright exec playwright show-report",
     "watch": "turbo run watch --concurrency=30",
     "webhook": "./packages/cli/bin/n8n webhook",
-    "worker": "./packages/cli/bin/n8n worker"
+    "worker": "./packages/cli/bin/n8n worker",
+    "start:render": "NODE_OPTIONS='--max-old-space-size=512' NODE_ENV=production node packages/cli/bin/n8n start",
+    "prebuild:render": "rm -rf packages/nodes-base/nodes/Kafka packages/nodes-base/nodes/Redis || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.0",
