@@ -52,11 +52,8 @@
     "watch": "turbo run watch --concurrency=30",
     "webhook": "./packages/cli/bin/n8n webhook",
     "worker": "./packages/cli/bin/n8n worker",
-    
-    // 🚨 تغییرات اصلی برای Render:
-    "prebuild:render": "echo 'Starting Render build...' && rm -rf packages/nodes-base/nodes/Kafka packages/nodes-base/nodes/Redis || true",
-    "build:render": "export NODE_OPTIONS='--max-old-space-size=512' && pnpm install --prod --ignore-scripts && pnpm run build:deploy",
-    "start:render": "export NODE_OPTIONS='--max-old-space-size=512' && export NODE_ENV=production && cd packages/cli && node bin/n8n start"
+    "start:render": "cd packages/cli && NODE_ENV=production node bin/n8n start",
+    "prebuild:render": "rm -rf packages/nodes-base/nodes/Kafka packages/nodes-base/nodes/Redis || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.0",
